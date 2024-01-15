@@ -87,7 +87,11 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',
+        tag = 'legacy',
+        event = 'LspAttach',
+        opts = {},
+      },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -169,23 +173,24 @@ require('lazy').setup({
 
   {
     'rebelot/kanagawa.nvim',
+    name = 'kanagawa',
     priority = 1000,
-    config = function()
-      vim.cmd.colorscheme('kanagawa');
-    end,
+    opts = {
+      transparent = true,
+      integrations = {
+      telescope = true,
+      harpoon = true,
+      mason = true,
+      neotest = true,
+      nvimtree = true,
+    },
   },
+  config = function(_, opts)
+    require('kanagawa').setup(opts)
+    vim.cmd.colorscheme('kanagawa');
+  end
+},
 
-
-  -- {  
-  --   --Tokyonight theme added by me
-  --   "folke/tokyonight.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = {},
-  --   config = function()
-  --     vim.cmd.colorscheme 'tokyonight-storm'
-  --   end,
-  -- },
 
   {
     -- Set lualine as statusline
@@ -206,9 +211,8 @@ require('lazy').setup({
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
+    main = 'ibl',
     opts = {
-      char = '┊',
-      show_trailing_blankline_indent = true,
     },
   },
 
